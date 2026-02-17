@@ -526,73 +526,73 @@
         <span class="brand-dot" aria-hidden="true"></span>
         <span>TrendCatch</span>
       </div>
-      <nav class="nav" aria-label="main">
-        <a href="#">Explore</a>
-        <a href="#">Lifestyle</a>
-        <a href="#">Food</a>
-        <a href="#">Culture</a>
-        <a href="#">Music</a>
+      <nav class="nav" id="mainNav" aria-label="main">
+        <a href="#" id="navExplore">Explore</a>
+        <a href="#" id="navLifestyle">Lifestyle</a>
+        <a href="#" id="navFood">Food</a>
+        <a href="#" id="navCulture">Culture</a>
+        <a href="#" id="navMusic">Music</a>
       </nav>
       <div class="toolbar">
-        <label for="fontSelect" class="sr-only" style="position:absolute;left:-9999px;">폰트 선택</label>
-        <select id="fontSelect" class="font-switch" aria-label="폰트 선택">
-          <option value="ko">폰트: 한국어 (기본)</option>
-          <option value="en">Font: English</option>
+        <label for="langSelect" class="sr-only" id="langLabel" style="position:absolute;left:-9999px;">언어 선택</label>
+        <select id="langSelect" class="font-switch" aria-label="언어 선택">
+          <option value="ko">한국어</option>
+          <option value="en">English</option>
         </select>
-        <button class="join">Join</button>
+        <button class="join" id="joinBtn">Join</button>
       </div>
     </header>
 
-    <section class="hero" aria-label="메인 배너">
+    <section class="hero" id="hero" aria-label="메인 배너">
       <div>
-        <span class="tag">TR-15 · TOP STORIES</span>
-        <h1>The World's Next Obsession, Curated by <span class="highlight">AI</span>.</h1>
-        <p>Real-time data from social buzz and consumer behavior, edited into one clean weekly feed.</p>
-        <button class="hero-cta">Explore This Week's Top</button>
+        <span class="tag" id="heroTag">TR-15 · TOP STORIES</span>
+        <h1 id="heroTitle">The World's Next Obsession, Curated by <span class="highlight">AI</span>.</h1>
+        <p id="heroDesc">Real-time data from social buzz and consumer behavior, edited into one clean weekly feed.</p>
+        <button class="hero-cta" id="heroCta">Explore This Week's Top</button>
       </div>
-      <div class="hero-card" aria-hidden="true">300×300</div>
+      <div class="hero-card" id="heroCard" aria-hidden="true">300×300</div>
     </section>
 
     <section>
       <div class="section-title">
-        <h2>Explore by Category</h2>
-        <p class="sub">See All Categories (5)</p>
+        <h2 id="catTitle">Explore by Category</h2>
+        <p class="sub" id="catSub">See All Categories (5)</p>
       </div>
       <div class="categories">
-        <article class="cat-card"><strong>Fashion</strong><span>31 items</span></article>
-        <article class="cat-card"><strong>Lifestyle</strong><span>24 items</span></article>
-        <article class="cat-card"><strong>Food</strong><span>39 items</span></article>
-        <article class="cat-card"><strong>Culture</strong><span>17 items</span></article>
-        <article class="cat-card"><strong>Music</strong><span>12 items</span></article>
+        <article class="cat-card"><strong id="cat1Title">Fashion</strong><span id="cat1Sub">31 items</span></article>
+        <article class="cat-card"><strong id="cat2Title">Lifestyle</strong><span id="cat2Sub">24 items</span></article>
+        <article class="cat-card"><strong id="cat3Title">Food</strong><span id="cat3Sub">39 items</span></article>
+        <article class="cat-card"><strong id="cat4Title">Culture</strong><span id="cat4Sub">17 items</span></article>
+        <article class="cat-card"><strong id="cat5Title">Music</strong><span id="cat5Sub">12 items</span></article>
       </div>
     </section>
 
     <section>
       <div class="section-title">
-        <h2>Trends by Region</h2>
-        <p class="sub">Weekly view</p>
+        <h2 id="regionTitle">Trends by Region</h2>
+        <p class="sub" id="regionSub">Weekly view</p>
       </div>
       <div class="region-grid">
-        <div class="panel map-box" aria-label="region map mock">
+        <div class="panel map-box" id="mapBox" aria-label="region map mock">
           <span class="map-dot" aria-hidden="true"></span>
-          <span class="map-pill">Region Activated</span>
+          <span class="map-pill" id="mapPill">Region Activated</span>
         </div>
         <div class="panel trends-list">
           <article class="trend-item">
             <div class="thumb"></div>
-            <div><strong>Espresso Minimalism</strong><span>United States · Lifestyle</span></div>
+            <div><strong id="trend1Title">Espresso Minimalism</strong><span id="trend1Sub">United States · Lifestyle</span></div>
           </article>
           <article class="trend-item">
             <div class="thumb" style="background:linear-gradient(140deg,#d7c9a0,#f0e2bd)"></div>
-            <div><strong>Curated Meal Kits</strong><span>France · Food</span></div>
+            <div><strong id="trend2Title">Curated Meal Kits</strong><span id="trend2Sub">France · Food</span></div>
           </article>
           <article class="trend-item">
             <div class="thumb" style="background:linear-gradient(140deg,#9fc5c0,#dff2ef)"></div>
-            <div><strong>Immersive Digital Art</strong><span>Korea · Culture</span></div>
+            <div><strong id="trend3Title">Immersive Digital Art</strong><span id="trend3Sub">Korea · Culture</span></div>
           </article>
           <article class="trend-item">
             <div class="thumb" style="background:linear-gradient(140deg,#ccb4d6,#efdef5)"></div>
-            <div><strong>Clean Sound Bedroom Pop</strong><span>UK · Music</span></div>
+            <div><strong id="trend4Title">Clean Sound Bedroom Pop</strong><span id="trend4Sub">UK · Music</span></div>
           </article>
         </div>
       </div>
@@ -600,73 +600,285 @@
 
     <section>
       <div class="section-title">
-        <h2>Trend Feed</h2>
-        <p class="sub">Latest picks</p>
+        <h2 id="feedTitle">Trend Feed</h2>
+        <p class="sub" id="feedSub">Latest picks</p>
       </div>
       <div class="feed">
         <article class="feed-card">
-          <img class="feed-image" src="https://images.unsplash.com/photo-1619473219369-ff7f0c4d96f5?auto=format&fit=crop&w=700&q=80" alt="silver accessories" />
-          <div class="feed-body"><h3>Matte Silver Accessories</h3><p>Street minimal chains and matte buckles are back in spring edits.</p></div>
+          <img class="feed-image" id="feedImage1" src="https://images.unsplash.com/photo-1619473219369-ff7f0c4d96f5?auto=format&fit=crop&w=700&q=80" alt="silver accessories" />
+          <div class="feed-body"><h3 id="feed1Title">Matte Silver Accessories</h3><p id="feed1Desc">Street minimal chains and matte buckles are back in spring edits.</p></div>
         </article>
         <article class="feed-card">
-          <img class="feed-image" src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=700&q=80" alt="pistachio drink" />
-          <div class="feed-body"><h3>Pistachio Everything</h3><p>Nut-forward desserts are expanding into coffee and bakery staples.</p></div>
+          <img class="feed-image" id="feedImage2" src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=700&q=80" alt="pistachio drink" />
+          <div class="feed-body"><h3 id="feed2Title">Pistachio Everything</h3><p id="feed2Desc">Nut-forward desserts are expanding into coffee and bakery staples.</p></div>
         </article>
         <article class="feed-card">
-          <img class="feed-image" src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=700&q=80" alt="green knit fashion" />
-          <div class="feed-body"><h3>Cozy Chic Knits</h3><p>Soft moss knitwear and oversized silhouettes dominate weekly lookbooks.</p></div>
+          <img class="feed-image" id="feedImage3" src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=700&q=80" alt="green knit fashion" />
+          <div class="feed-body"><h3 id="feed3Title">Cozy Chic Knits</h3><p id="feed3Desc">Soft moss knitwear and oversized silhouettes dominate weekly lookbooks.</p></div>
         </article>
         <article class="feed-card">
-          <img class="feed-image" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80" alt="lofi setup" />
-          <div class="feed-body"><h3>Lo-fi Synth Waves</h3><p>Work playlist culture is shifting toward textured analog-inspired beats.</p></div>
+          <img class="feed-image" id="feedImage4" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80" alt="lofi setup" />
+          <div class="feed-body"><h3 id="feed4Title">Lo-fi Synth Waves</h3><p id="feed4Desc">Work playlist culture is shifting toward textured analog-inspired beats.</p></div>
         </article>
       </div>
-      <button class="load" type="button">Load More Trends</button>
+      <button class="load" type="button" id="loadBtn">Load More Trends</button>
     </section>
 
     <footer class="footer">
       <div class="foot-brand">
         <h4>TrendCatch</h4>
-        <p>Subscribe for trend alerts and weekly curated picks.</p>
+        <p id="footDesc">Subscribe for trend alerts and weekly curated picks.</p>
         <form class="subscribe" onsubmit="return false">
-          <input type="email" placeholder="Your email" aria-label="email" />
-          <button type="submit">Subscribe</button>
+          <input type="email" id="emailInput" placeholder="Your email" aria-label="email" />
+          <button type="submit" id="subscribeBtn">Subscribe</button>
         </form>
-        <div class="copy">©2026 TrendCatch. All rights reserved.</div>
+        <div class="copy" id="copyText">©2026 TrendCatch. All rights reserved.</div>
       </div>
       <div class="foot-links">
         <div>
-          <h5>Company</h5>
-          <a href="#">About</a>
-          <a href="#">Careers</a>
-          <a href="#">Press</a>
+          <h5 id="companyTitle">Company</h5>
+          <a href="#" id="companyAbout">About</a>
+          <a href="#" id="companyCareers">Careers</a>
+          <a href="#" id="companyPress">Press</a>
         </div>
         <div>
-          <h5>Policy</h5>
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-          <a href="#">Partners</a>
+          <h5 id="policyTitle">Policy</h5>
+          <a href="#" id="policyPrivacy">Privacy</a>
+          <a href="#" id="policyTerms">Terms</a>
+          <a href="#" id="policyPartners">Partners</a>
         </div>
       </div>
     </footer>
   </main>
 
   <script>
-    const FONT_KEY = "trendcatch-font-choice";
-    const fontSelect = document.getElementById("fontSelect");
+    const LANG_KEY = "trendcatch-lang-choice";
+    const langSelect = document.getElementById("langSelect");
 
-    function applyFontMode(mode) {
+    const I18N = {
+      ko: {
+        pageTitle: "TrendCatch",
+        htmlLang: "ko",
+        navAria: "메인 메뉴",
+        heroAria: "메인 배너",
+        mapAria: "지역 트렌드 지도 예시",
+        langAria: "언어 선택",
+        emailAria: "이메일",
+        navExplore: "탐색",
+        navLifestyle: "라이프스타일",
+        navFood: "푸드",
+        navCulture: "컬처",
+        navMusic: "음악",
+        joinBtn: "가입",
+        heroTag: "TR-15 · TOP STORIES",
+        heroTitle: "다음 글로벌 열풍, <span class=\"highlight\">AI</span>가 큐레이션합니다.",
+        heroDesc: "소셜 버즈와 소비자 행동 데이터를 실시간으로 모아, 한눈에 보는 주간 트렌드 피드로 정리합니다.",
+        heroCta: "이번 주 TOP 트렌드 보기",
+        catTitle: "카테고리별 탐색",
+        catSub: "전체 카테고리 보기 (5)",
+        cat1Title: "패션",
+        cat1Sub: "31개 항목",
+        cat2Title: "라이프스타일",
+        cat2Sub: "24개 항목",
+        cat3Title: "푸드",
+        cat3Sub: "39개 항목",
+        cat4Title: "컬처",
+        cat4Sub: "17개 항목",
+        cat5Title: "음악",
+        cat5Sub: "12개 항목",
+        regionTitle: "지역별 트렌드",
+        regionSub: "주간 보기",
+        mapPill: "활성 지역",
+        trend1Title: "에스프레소 미니멀리즘",
+        trend1Sub: "미국 · 라이프스타일",
+        trend2Title: "큐레이티드 밀키트",
+        trend2Sub: "프랑스 · 푸드",
+        trend3Title: "몰입형 디지털 아트",
+        trend3Sub: "한국 · 컬처",
+        trend4Title: "클린 사운드 베드룸 팝",
+        trend4Sub: "영국 · 음악",
+        feedTitle: "트렌드 피드",
+        feedSub: "최신 추천",
+        feed1Title: "매트 실버 액세서리",
+        feed1Desc: "미니멀 체인과 매트 버클이 봄 시즌 스타일에서 다시 주목받고 있습니다.",
+        feed2Title: "피스타치오 에브리띵",
+        feed2Desc: "견과 디저트 트렌드가 커피와 베이커리 메뉴 전반으로 빠르게 확장 중입니다.",
+        feed3Title: "코지 시크 니트",
+        feed3Desc: "부드러운 모스 톤 니트와 오버사이즈 실루엣이 주간 룩북을 이끌고 있습니다.",
+        feed4Title: "로파이 신스 웨이브",
+        feed4Desc: "워크 플레이리스트가 질감 있는 아날로그 감성 사운드로 이동하고 있습니다.",
+        loadBtn: "트렌드 더 보기",
+        footDesc: "주간 큐레이션과 실시간 트렌드 알림을 구독해 보세요.",
+        subscribeBtn: "구독",
+        copyText: "©2026 TrendCatch. All rights reserved.",
+        companyTitle: "회사",
+        companyAbout: "소개",
+        companyCareers: "채용",
+        companyPress: "보도자료",
+        policyTitle: "정책",
+        policyPrivacy: "개인정보처리방침",
+        policyTerms: "이용약관",
+        policyPartners: "파트너",
+        emailPlaceholder: "이메일 주소",
+        feedImage1Alt: "실버 액세서리",
+        feedImage2Alt: "피스타치오 음료",
+        feedImage3Alt: "그린 니트 패션",
+        feedImage4Alt: "로파이 작업 셋업"
+      },
+      en: {
+        pageTitle: "TrendCatch",
+        htmlLang: "en",
+        navAria: "main menu",
+        heroAria: "main banner",
+        mapAria: "regional trend map mock",
+        langAria: "language selection",
+        emailAria: "email",
+        navExplore: "Explore",
+        navLifestyle: "Lifestyle",
+        navFood: "Food",
+        navCulture: "Culture",
+        navMusic: "Music",
+        joinBtn: "Join",
+        heroTag: "TR-15 · TOP STORIES",
+        heroTitle: "The World's Next Obsession, Curated by <span class=\"highlight\">AI</span>.",
+        heroDesc: "Real-time data from social buzz and consumer behavior, edited into one clean weekly feed.",
+        heroCta: "Explore This Week's Top",
+        catTitle: "Explore by Category",
+        catSub: "See All Categories (5)",
+        cat1Title: "Fashion",
+        cat1Sub: "31 items",
+        cat2Title: "Lifestyle",
+        cat2Sub: "24 items",
+        cat3Title: "Food",
+        cat3Sub: "39 items",
+        cat4Title: "Culture",
+        cat4Sub: "17 items",
+        cat5Title: "Music",
+        cat5Sub: "12 items",
+        regionTitle: "Trends by Region",
+        regionSub: "Weekly view",
+        mapPill: "Region Activated",
+        trend1Title: "Espresso Minimalism",
+        trend1Sub: "United States · Lifestyle",
+        trend2Title: "Curated Meal Kits",
+        trend2Sub: "France · Food",
+        trend3Title: "Immersive Digital Art",
+        trend3Sub: "Korea · Culture",
+        trend4Title: "Clean Sound Bedroom Pop",
+        trend4Sub: "UK · Music",
+        feedTitle: "Trend Feed",
+        feedSub: "Latest picks",
+        feed1Title: "Matte Silver Accessories",
+        feed1Desc: "Street minimal chains and matte buckles are back in spring edits.",
+        feed2Title: "Pistachio Everything",
+        feed2Desc: "Nut-forward desserts are expanding into coffee and bakery staples.",
+        feed3Title: "Cozy Chic Knits",
+        feed3Desc: "Soft moss knitwear and oversized silhouettes dominate weekly lookbooks.",
+        feed4Title: "Lo-fi Synth Waves",
+        feed4Desc: "Work playlist culture is shifting toward textured analog-inspired beats.",
+        loadBtn: "Load More Trends",
+        footDesc: "Subscribe for trend alerts and weekly curated picks.",
+        subscribeBtn: "Subscribe",
+        copyText: "©2026 TrendCatch. All rights reserved.",
+        companyTitle: "Company",
+        companyAbout: "About",
+        companyCareers: "Careers",
+        companyPress: "Press",
+        policyTitle: "Policy",
+        policyPrivacy: "Privacy",
+        policyTerms: "Terms",
+        policyPartners: "Partners",
+        emailPlaceholder: "Your email",
+        feedImage1Alt: "silver accessories",
+        feedImage2Alt: "pistachio drink",
+        feedImage3Alt: "green knit fashion",
+        feedImage4Alt: "lofi setup"
+      }
+    };
+
+    function applyLanguage(mode) {
       const value = mode === "en" ? "en" : "ko";
+      const t = I18N[value];
+
       document.documentElement.setAttribute("data-font", value);
-      fontSelect.value = value;
-      localStorage.setItem(FONT_KEY, value);
+      document.documentElement.setAttribute("lang", t.htmlLang);
+      document.title = t.pageTitle;
+      langSelect.value = value;
+      localStorage.setItem(LANG_KEY, value);
+
+      document.getElementById("mainNav").setAttribute("aria-label", t.navAria);
+      document.getElementById("hero").setAttribute("aria-label", t.heroAria);
+      document.getElementById("mapBox").setAttribute("aria-label", t.mapAria);
+      langSelect.setAttribute("aria-label", t.langAria);
+      document.getElementById("emailInput").setAttribute("aria-label", t.emailAria);
+
+      document.getElementById("navExplore").textContent = t.navExplore;
+      document.getElementById("navLifestyle").textContent = t.navLifestyle;
+      document.getElementById("navFood").textContent = t.navFood;
+      document.getElementById("navCulture").textContent = t.navCulture;
+      document.getElementById("navMusic").textContent = t.navMusic;
+      document.getElementById("joinBtn").textContent = t.joinBtn;
+      document.getElementById("heroTag").textContent = t.heroTag;
+      document.getElementById("heroTitle").innerHTML = t.heroTitle;
+      document.getElementById("heroDesc").textContent = t.heroDesc;
+      document.getElementById("heroCta").textContent = t.heroCta;
+      document.getElementById("catTitle").textContent = t.catTitle;
+      document.getElementById("catSub").textContent = t.catSub;
+      document.getElementById("cat1Title").textContent = t.cat1Title;
+      document.getElementById("cat1Sub").textContent = t.cat1Sub;
+      document.getElementById("cat2Title").textContent = t.cat2Title;
+      document.getElementById("cat2Sub").textContent = t.cat2Sub;
+      document.getElementById("cat3Title").textContent = t.cat3Title;
+      document.getElementById("cat3Sub").textContent = t.cat3Sub;
+      document.getElementById("cat4Title").textContent = t.cat4Title;
+      document.getElementById("cat4Sub").textContent = t.cat4Sub;
+      document.getElementById("cat5Title").textContent = t.cat5Title;
+      document.getElementById("cat5Sub").textContent = t.cat5Sub;
+      document.getElementById("regionTitle").textContent = t.regionTitle;
+      document.getElementById("regionSub").textContent = t.regionSub;
+      document.getElementById("mapPill").textContent = t.mapPill;
+      document.getElementById("trend1Title").textContent = t.trend1Title;
+      document.getElementById("trend1Sub").textContent = t.trend1Sub;
+      document.getElementById("trend2Title").textContent = t.trend2Title;
+      document.getElementById("trend2Sub").textContent = t.trend2Sub;
+      document.getElementById("trend3Title").textContent = t.trend3Title;
+      document.getElementById("trend3Sub").textContent = t.trend3Sub;
+      document.getElementById("trend4Title").textContent = t.trend4Title;
+      document.getElementById("trend4Sub").textContent = t.trend4Sub;
+      document.getElementById("feedTitle").textContent = t.feedTitle;
+      document.getElementById("feedSub").textContent = t.feedSub;
+      document.getElementById("feed1Title").textContent = t.feed1Title;
+      document.getElementById("feed1Desc").textContent = t.feed1Desc;
+      document.getElementById("feed2Title").textContent = t.feed2Title;
+      document.getElementById("feed2Desc").textContent = t.feed2Desc;
+      document.getElementById("feed3Title").textContent = t.feed3Title;
+      document.getElementById("feed3Desc").textContent = t.feed3Desc;
+      document.getElementById("feed4Title").textContent = t.feed4Title;
+      document.getElementById("feed4Desc").textContent = t.feed4Desc;
+      document.getElementById("loadBtn").textContent = t.loadBtn;
+      document.getElementById("footDesc").textContent = t.footDesc;
+      document.getElementById("subscribeBtn").textContent = t.subscribeBtn;
+      document.getElementById("copyText").textContent = t.copyText;
+      document.getElementById("companyTitle").textContent = t.companyTitle;
+      document.getElementById("companyAbout").textContent = t.companyAbout;
+      document.getElementById("companyCareers").textContent = t.companyCareers;
+      document.getElementById("companyPress").textContent = t.companyPress;
+      document.getElementById("policyTitle").textContent = t.policyTitle;
+      document.getElementById("policyPrivacy").textContent = t.policyPrivacy;
+      document.getElementById("policyTerms").textContent = t.policyTerms;
+      document.getElementById("policyPartners").textContent = t.policyPartners;
+      document.getElementById("emailInput").setAttribute("placeholder", t.emailPlaceholder);
+      document.getElementById("feedImage1").setAttribute("alt", t.feedImage1Alt);
+      document.getElementById("feedImage2").setAttribute("alt", t.feedImage2Alt);
+      document.getElementById("feedImage3").setAttribute("alt", t.feedImage3Alt);
+      document.getElementById("feedImage4").setAttribute("alt", t.feedImage4Alt);
     }
 
-    const saved = localStorage.getItem(FONT_KEY);
-    applyFontMode(saved || "ko");
+    const saved = localStorage.getItem(LANG_KEY);
+    applyLanguage(saved || "ko");
 
-    fontSelect.addEventListener("change", (event) => {
-      applyFontMode(event.target.value);
+    langSelect.addEventListener("change", (event) => {
+      applyLanguage(event.target.value);
     });
   </script>
 </body>
