@@ -1,1012 +1,673 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-font="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TrendScope (MVP) — 최신 트렌드 찾아서 보여주기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TrendCatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Nanum+Myeongjo:wght@700;800&family=Space+Grotesk:wght@400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
   <style>
-    :root{
-      --bg:#0b0f19;
-      --panel:#101828;
-      --panel2:#0f172a;
-      --text:#e6eaf2;
-      --muted:#a7b0c0;
-      --line:rgba(255,255,255,.09);
-      --chip:#0b1220;
-      --chipLine:rgba(255,255,255,.12);
-      --accent:#7c3aed;
-      --accent2:#22c55e;
-      --warn:#f59e0b;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
-      --radius2:22px;
-      --focus: 0 0 0 3px rgba(124,58,237,.25);
-      color-scheme: dark;
-    }
-    [data-theme="light"]{
-      --bg:#f6f7fb;
-      --panel:#ffffff;
-      --panel2:#ffffff;
-      --text:#0b1220;
-      --muted:#556074;
-      --line:rgba(10,18,32,.10);
-      --chip:#f3f5fb;
-      --chipLine:rgba(10,18,32,.12);
-      --shadow: 0 10px 30px rgba(16,24,40,.12);
-      --focus: 0 0 0 3px rgba(124,58,237,.20);
-      color-scheme: light;
+    :root {
+      --bg: #f6f2ec;
+      --paper: #ffffff;
+      --ink: #2f2c28;
+      --muted: #8f877d;
+      --line: #e8e0d6;
+      --chip: #f3ece2;
+      --brand: #d8a36f;
+      --accent: #f0b175;
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --font-ko: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --font-en: "Space Grotesk", "Segoe UI", sans-serif;
+      --serif-ko: "Nanum Myeongjo", serif;
+      --serif-en: "DM Serif Display", serif;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "맑은 고딕";
-      background: radial-gradient(1200px 500px at 15% 0%, rgba(124,58,237,.18), transparent 50%),
-                  radial-gradient(1000px 500px at 85% 10%, rgba(34,197,94,.10), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      letter-spacing:-0.2px;
-    }
-    a{ color:inherit; text-decoration:none; }
-    button, input, select{ font:inherit; }
-    .wrap{ max-width:1200px; margin:0 auto; padding:22px; }
+    * { box-sizing: border-box; }
 
-    /* Header */
-    header{
-      position:sticky; top:0; z-index:10;
-      backdrop-filter: blur(10px);
-      background: color-mix(in oklab, var(--bg), transparent 35%);
-      border-bottom:1px solid var(--line);
-    }
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:14px;
-      padding:14px 22px;
-      max-width:1200px; margin:0 auto;
-    }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      min-width: 220px;
-    }
-    .logo{
-      width:36px; height:36px; border-radius:12px;
-      background: linear-gradient(135deg, var(--accent), #06b6d4);
-      box-shadow: 0 10px 25px rgba(124,58,237,.25);
-    }
-    .brand h1{
-      font-size:16px; margin:0; line-height:1.15;
-      font-weight:800;
-    }
-    .brand .sub{
-      display:block; font-size:12px; color:var(--muted); font-weight:600;
-      margin-top:2px;
+    html,
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 500px at 0% 0%, #fff8ef, transparent 60%), var(--bg);
+      color: var(--ink);
+      min-height: 100%;
     }
 
-    .actions{ display:flex; align-items:center; gap:10px; }
-    .btn{
-      border:1px solid var(--line);
-      background: color-mix(in oklab, var(--panel), transparent 0%);
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      box-shadow: none;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-    }
-    .btn:hover{ border-color: color-mix(in oklab, var(--line), var(--accent) 25%); }
-    .btn:active{ transform: translateY(1px); }
-    .btn.primary{
-      border-color: color-mix(in oklab, var(--accent), white 10%);
-      background: linear-gradient(135deg, color-mix(in oklab, var(--accent), white 6%), color-mix(in oklab, #06b6d4, white 4%));
-      color:white;
-      font-weight:800;
-    }
-    .btn.ghost{
-      background: transparent;
+    body {
+      font-family: var(--font-ko);
+      letter-spacing: -0.02em;
     }
 
-    /* Layout */
-    .hero{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:18px;
-      margin-top:18px;
-    }
-    @media (max-width: 980px){
-      .hero{ grid-template-columns:1fr; }
-      .brand{ min-width:auto; }
+    html[data-font="en"] body {
+      font-family: var(--font-en);
+      letter-spacing: -0.01em;
     }
 
-    .panel{
-      border:1px solid var(--line);
-      background: color-mix(in oklab, var(--panel), transparent 0%);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-    }
-    .panel .hd{
-      padding:16px 16px 10px 16px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-      border-bottom:1px solid var(--line);
-    }
-    .panel .hd h2{
-      margin:0;
-      font-size:16px;
-      font-weight:900;
-      letter-spacing:-0.3px;
-    }
-    .panel .hd p{
-      margin:6px 0 0 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.45;
-      font-weight:600;
-    }
-    .panel .bd{ padding:14px 16px 16px; }
+    a { color: inherit; text-decoration: none; }
+    button, select { font: inherit; color: inherit; }
 
-    /* Filters */
-    .filters{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr .9fr;
-      gap:10px;
-      margin-top:12px;
-    }
-    @media (max-width: 980px){
-      .filters{ grid-template-columns:1fr; }
-    }
-    .field label{
-      display:block;
-      font-size:12px; font-weight:900;
-      color: var(--muted);
-      margin:0 0 6px 2px;
-    }
-    .control{
-      width:100%;
-      padding:11px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background: color-mix(in oklab, var(--panel2), transparent 0%);
-      color:var(--text);
-      outline:none;
-      transition: box-shadow .15s ease, border-color .15s ease;
-    }
-    .control:focus{
-      box-shadow: var(--focus);
-      border-color: color-mix(in oklab, var(--accent), var(--line) 35%);
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 18px 20px 48px;
     }
 
-    .chips{
-      display:flex; flex-wrap:wrap; gap:8px;
-      margin-top:12px;
-    }
-    .chip{
-      padding:9px 10px;
-      border-radius:999px;
-      border:1px solid var(--chipLine);
-      background: var(--chip);
-      font-size:12px;
-      font-weight:900;
-      color: color-mix(in oklab, var(--text), var(--muted) 12%);
-      cursor:pointer;
-      user-select:none;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-    }
-    .chip:hover{ border-color: color-mix(in oklab, var(--accent), var(--chipLine) 55%); }
-    .chip:active{ transform: translateY(1px); }
-    .chip[data-active="true"]{
-      border-color: color-mix(in oklab, var(--accent), white 10%);
-      background: color-mix(in oklab, var(--accent), black 65%);
-      color:white;
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
     }
 
-    /* Cards */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-    }
-    @media (max-width: 980px){ .grid{ grid-template-columns:1fr; } }
-    .card{
-      border:1px solid var(--line);
-      background: color-mix(in oklab, var(--panel2), transparent 0%);
-      border-radius: var(--radius);
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      transition: transform .10s ease, border-color .15s ease;
-      cursor:pointer;
-    }
-    .card:hover{
-      transform: translateY(-2px);
-      border-color: color-mix(in oklab, var(--accent), var(--line) 55%);
-    }
-    .meta{
-      display:flex; flex-wrap:wrap; gap:8px;
-      align-items:center;
-    }
-    .pill{
-      font-size:11px; font-weight:900;
-      padding:6px 9px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      color: var(--muted);
-      background: transparent;
-    }
-    .pill.hot{
-      border-color: color-mix(in oklab, var(--warn), white 15%);
-      color: color-mix(in oklab, var(--warn), white 5%);
-    }
-    .pill.ai{
-      border-color: color-mix(in oklab, var(--accent2), white 12%);
-      color: color-mix(in oklab, var(--accent2), white 5%);
-    }
-    .card h3{
-      margin:0;
-      font-size:15px;
-      font-weight:950;
-      line-height:1.25;
-    }
-    .desc{
-      margin:0;
-      color: var(--muted);
-      font-size:13px;
-      line-height:1.45;
-      font-weight:650;
-      display:-webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow:hidden;
-    }
-    .row{
-      display:flex; justify-content:space-between; align-items:center; gap:10px;
-      margin-top:auto;
-      padding-top:6px;
-    }
-    .score{
-      font-weight:1000;
-      font-size:12px;
-      color: color-mix(in oklab, var(--text), var(--accent) 15%);
-    }
-    .miniBtns{ display:flex; gap:8px; }
-    .mini{
-      padding:8px 10px;
-      border-radius:12px;
-      font-size:12px;
-      font-weight:900;
-      border:1px solid var(--line);
-      background: transparent;
-      cursor:pointer;
-    }
-    .mini.primary{
-      border-color: color-mix(in oklab, var(--accent), white 10%);
-      background: color-mix(in oklab, var(--accent), black 65%);
-      color:white;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #746a5f;
     }
 
-    /* Sections */
-    .sectionTitle{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      margin:18px 2px 10px;
-    }
-    .sectionTitle h2{
-      margin:0;
-      font-size:15px;
-      font-weight:1000;
-    }
-    .sectionTitle .hint{
-      margin:0;
-      font-size:12px;
-      color:var(--muted);
-      font-weight:700;
+    .brand-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--brand);
+      box-shadow: 0 0 0 5px #f3e4d3;
     }
 
-    /* Modal */
-    .modalBack{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.55);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      z-index:50;
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 12px;
+      color: #8b8378;
+      flex-wrap: wrap;
     }
-    .modalBack[data-open="true"]{ display:flex; }
-    .modal{
-      width:min(860px, 100%);
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .font-switch {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .join {
+      border: 0;
+      border-radius: 999px;
+      background: #d7ab77;
+      color: #fff;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .hero {
+      border: 1px solid #dfd7cc;
       border-radius: 24px;
-      border:1px solid var(--line);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      overflow:hidden;
+      background:
+        linear-gradient(110deg, rgba(40, 38, 35, 0.72), rgba(40, 38, 35, 0.28)),
+        url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80") center/cover;
+      min-height: 290px;
+      padding: 26px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      overflow: hidden;
     }
-    .modal .mh{
-      padding:14px 16px;
-      display:flex; justify-content:space-between; align-items:center; gap:12px;
-      border-bottom:1px solid var(--line);
-    }
-    .modal .mh h3{
-      margin:0;
-      font-size:16px;
-      font-weight:1000;
-      line-height:1.25;
-    }
-    .modal .mb{
-      padding:14px 16px 16px;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-    }
-    @media (max-width: 980px){
-      .modal .mb{ grid-template-columns:1fr; }
-    }
-    .kv{
-      display:grid;
-      gap:10px;
-    }
-    .kv .k{
-      font-size:12px; color:var(--muted); font-weight:900;
-      margin-bottom:2px;
-    }
-    .kv .v{
-      font-size:13px; font-weight:800; line-height:1.55;
-    }
-    .list{
-      margin:0;
-      padding-left:18px;
-      color: var(--muted);
-      font-size:13px;
-      font-weight:700;
-      line-height:1.6;
-    }
-    .linkBox{
-      border:1px solid var(--line);
-      border-radius: 16px;
-      padding:12px;
-      background: color-mix(in oklab, var(--panel2), transparent 0%);
-    }
-    .linkBox a{
-      display:block;
-      padding:10px 10px;
-      border-radius:12px;
-      border:1px solid var(--line);
-      margin-top:10px;
-      font-weight:900;
-      font-size:13px;
-      background: transparent;
-      transition: border-color .15s ease, transform .08s ease;
-    }
-    .linkBox a:hover{ border-color: color-mix(in oklab, var(--accent), var(--line) 55%); }
-    .linkBox a:active{ transform: translateY(1px); }
 
-    .footer{
-      margin:20px 0 8px;
-      color:var(--muted);
-      font-size:12px;
-      font-weight:650;
-      text-align:center;
+    .hero .tag {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      color: #f2dfcc;
+      font-size: 11px;
+      padding: 5px 9px;
+      margin-bottom: 10px;
+      backdrop-filter: blur(5px);
     }
-    .badge{
-      display:inline-flex; align-items:center; gap:6px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: transparent;
-      font-weight:900;
-      font-size:12px;
-      color:var(--muted);
+
+    .hero h1 {
+      margin: 0;
+      color: #fdf9f4;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.08;
+      max-width: 680px;
+      font-weight: 700;
+    }
+
+    html[data-font="ko"] .hero h1 {
+      font-family: var(--serif-ko);
+      font-weight: 800;
+    }
+
+    html[data-font="en"] .hero h1 {
+      font-family: var(--serif-en);
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .hero h1 .highlight { color: var(--accent); }
+
+    .hero p {
+      margin: 10px 0 16px;
+      color: #efe9e3;
+      max-width: 560px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .hero-cta {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .hero-card {
+      width: 240px;
+      aspect-ratio: 1;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.78);
+      display: grid;
+      place-content: center;
+      font-size: 30px;
+      backdrop-filter: blur(4px);
+    }
+
+    .section-title {
+      margin: 22px 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .section-title .sub {
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .categories {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .cat-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--chip);
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.14s ease, border-color 0.14s ease;
+    }
+
+    .cat-card:hover {
+      transform: translateY(-2px);
+      border-color: #ddc9b1;
+    }
+
+    .cat-card strong {
+      display: block;
+      font-size: 13px;
+      margin-top: 8px;
+      margin-bottom: 3px;
+    }
+
+    .cat-card span {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .region-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1.15fr 0.85fr;
+      margin-top: 18px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .map-box {
+      min-height: 320px;
+      background:
+        linear-gradient(160deg, rgba(232, 233, 238, 0.95), rgba(245, 244, 241, 0.98)),
+        repeating-linear-gradient(
+          90deg,
+          rgba(155, 159, 170, 0.14),
+          rgba(155, 159, 170, 0.14) 2px,
+          transparent 2px,
+          transparent 12px
+        );
+      position: relative;
+      padding: 20px;
+    }
+
+    .map-dot {
+      position: absolute;
+      left: 52%;
+      top: 48%;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #f8c79c;
+      box-shadow: 0 0 0 10px rgba(244, 184, 129, 0.24);
+    }
+
+    .map-pill {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      border: 1px solid #d5ded0;
+      color: #3e7b4f;
+      background: #ecf8ef;
+      border-radius: 999px;
+      font-size: 11px;
+      padding: 5px 10px;
+      font-weight: 700;
+    }
+
+    .trends-list {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .trend-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fbf9f5;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: linear-gradient(140deg, #d4b28e, #f3dcc6);
+    }
+
+    .trend-item strong {
+      font-size: 13px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .trend-item span {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .feed {
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .feed-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--paper);
+      overflow: hidden;
+      min-height: 260px;
+    }
+
+    .feed-image {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feed-body {
+      padding: 12px;
+    }
+
+    .feed-body h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .feed-body p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .load {
+      margin: 22px auto 10px;
+      display: block;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #756d63;
+    }
+
+    .footer {
+      margin-top: 32px;
+      border-top: 1px solid var(--line);
+      padding-top: 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .foot-brand h4 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .foot-brand p {
+      margin: 8px 0 12px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .subscribe {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .subscribe input {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 12px;
+      min-width: 220px;
+      background: #fff;
+      color: inherit;
+      font: inherit;
+      font-size: 12px;
+    }
+
+    .subscribe button {
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: #2b2927;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .foot-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .foot-links div {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #f7f1e9;
+      padding: 12px;
+    }
+
+    .foot-links h5 {
+      margin: 0 0 8px;
+      font-size: 11px;
+      color: #9a8f83;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .foot-links a {
+      display: block;
+      font-size: 12px;
+      margin: 6px 0;
+      color: #5d5449;
+      font-weight: 600;
+    }
+
+    .copy {
+      margin-top: 16px;
+      font-size: 11px;
+      color: #a0978c;
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        min-height: 240px;
+        padding: 18px;
+      }
+
+      .hero-card {
+        display: none;
+      }
+
+      .categories {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .region-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feed {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 14px 14px 36px; }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .feed {
+        grid-template-columns: 1fr;
+      }
+
+      .subscribe input {
+        min-width: 180px;
+        width: 100%;
+      }
     }
   </style>
 </head>
-
 <body>
-<header>
-  <div class="topbar">
-    <div class="brand" role="banner" aria-label="TrendScope">
-      <div class="logo" aria-hidden="true"></div>
+  <main class="container">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>TrendCatch</span>
+      </div>
+      <nav class="nav" aria-label="main">
+        <a href="#">Explore</a>
+        <a href="#">Lifestyle</a>
+        <a href="#">Food</a>
+        <a href="#">Culture</a>
+        <a href="#">Music</a>
+      </nav>
+      <div class="toolbar">
+        <label for="fontSelect" class="sr-only" style="position:absolute;left:-9999px;">폰트 선택</label>
+        <select id="fontSelect" class="font-switch" aria-label="폰트 선택">
+          <option value="ko">폰트: 한국어 (기본)</option>
+          <option value="en">Font: English</option>
+        </select>
+        <button class="join">Join</button>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="메인 배너">
       <div>
-        <h1>TrendScope <span class="sub">전 세계 최신 트렌드 탐색 (MVP)</span></h1>
+        <span class="tag">TR-15 · TOP STORIES</span>
+        <h1>The World's Next Obsession, Curated by <span class="highlight">AI</span>.</h1>
+        <p>Real-time data from social buzz and consumer behavior, edited into one clean weekly feed.</p>
+        <button class="hero-cta">Explore This Week's Top</button>
       </div>
-    </div>
+      <div class="hero-card" aria-hidden="true">300×300</div>
+    </section>
 
-    <div class="actions">
-      <button class="btn ghost" id="btnRefresh" title="샘플 데이터 새로 섞기">새로고침</button>
-      <button class="btn" id="btnTheme" title="다크/라이트 전환">테마 전환</button>
-      <button class="btn primary" id="btnAbout" title="MVP 안내">MVP 안내</button>
-    </div>
-  </div>
-</header>
+    <section>
+      <div class="section-title">
+        <h2>Explore by Category</h2>
+        <p class="sub">See All Categories (5)</p>
+      </div>
+      <div class="categories">
+        <article class="cat-card"><strong>Fashion</strong><span>31 items</span></article>
+        <article class="cat-card"><strong>Lifestyle</strong><span>24 items</span></article>
+        <article class="cat-card"><strong>Food</strong><span>39 items</span></article>
+        <article class="cat-card"><strong>Culture</strong><span>17 items</span></article>
+        <article class="cat-card"><strong>Music</strong><span>12 items</span></article>
+      </div>
+    </section>
 
-<main class="wrap">
-  <section class="hero">
-    <div class="panel">
-      <div class="hd">
+    <section>
+      <div class="section-title">
+        <h2>Trends by Region</h2>
+        <p class="sub">Weekly view</p>
+      </div>
+      <div class="region-grid">
+        <div class="panel map-box" aria-label="region map mock">
+          <span class="map-dot" aria-hidden="true"></span>
+          <span class="map-pill">Region Activated</span>
+        </div>
+        <div class="panel trends-list">
+          <article class="trend-item">
+            <div class="thumb"></div>
+            <div><strong>Espresso Minimalism</strong><span>United States · Lifestyle</span></div>
+          </article>
+          <article class="trend-item">
+            <div class="thumb" style="background:linear-gradient(140deg,#d7c9a0,#f0e2bd)"></div>
+            <div><strong>Curated Meal Kits</strong><span>France · Food</span></div>
+          </article>
+          <article class="trend-item">
+            <div class="thumb" style="background:linear-gradient(140deg,#9fc5c0,#dff2ef)"></div>
+            <div><strong>Immersive Digital Art</strong><span>Korea · Culture</span></div>
+          </article>
+          <article class="trend-item">
+            <div class="thumb" style="background:linear-gradient(140deg,#ccb4d6,#efdef5)"></div>
+            <div><strong>Clean Sound Bedroom Pop</strong><span>UK · Music</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-title">
+        <h2>Trend Feed</h2>
+        <p class="sub">Latest picks</p>
+      </div>
+      <div class="feed">
+        <article class="feed-card">
+          <img class="feed-image" src="https://images.unsplash.com/photo-1619473219369-ff7f0c4d96f5?auto=format&fit=crop&w=700&q=80" alt="silver accessories" />
+          <div class="feed-body"><h3>Matte Silver Accessories</h3><p>Street minimal chains and matte buckles are back in spring edits.</p></div>
+        </article>
+        <article class="feed-card">
+          <img class="feed-image" src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=700&q=80" alt="pistachio drink" />
+          <div class="feed-body"><h3>Pistachio Everything</h3><p>Nut-forward desserts are expanding into coffee and bakery staples.</p></div>
+        </article>
+        <article class="feed-card">
+          <img class="feed-image" src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=700&q=80" alt="green knit fashion" />
+          <div class="feed-body"><h3>Cozy Chic Knits</h3><p>Soft moss knitwear and oversized silhouettes dominate weekly lookbooks.</p></div>
+        </article>
+        <article class="feed-card">
+          <img class="feed-image" src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=700&q=80" alt="lofi setup" />
+          <div class="feed-body"><h3>Lo-fi Synth Waves</h3><p>Work playlist culture is shifting toward textured analog-inspired beats.</p></div>
+        </article>
+      </div>
+      <button class="load" type="button">Load More Trends</button>
+    </section>
+
+    <footer class="footer">
+      <div class="foot-brand">
+        <h4>TrendCatch</h4>
+        <p>Subscribe for trend alerts and weekly curated picks.</p>
+        <form class="subscribe" onsubmit="return false">
+          <input type="email" placeholder="Your email" aria-label="email" />
+          <button type="submit">Subscribe</button>
+        </form>
+        <div class="copy">©2026 TrendCatch. All rights reserved.</div>
+      </div>
+      <div class="foot-links">
         <div>
-          <h2>오늘의 핫한 트렌드</h2>
-          <p>카테고리·국가·지역 필터로 “지금 뜨는 것”을 빠르게 훑어보는 화면입니다. (현재는 샘플 데이터)</p>
-        </div>
-        <div class="badge" title="MVP 버전">
-          <span aria-hidden="true">⚡</span> MVP v0.1
-        </div>
-      </div>
-      <div class="bd">
-        <div class="filters" aria-label="필터">
-          <div class="field">
-            <label for="search">키워드</label>
-            <input id="search" class="control" placeholder="예: 크로셰, 말차, 러닝, K-POP…" />
-          </div>
-          <div class="field">
-            <label for="country">국가</label>
-            <select id="country" class="control"></select>
-          </div>
-          <div class="field">
-            <label for="region">지역</label>
-            <select id="region" class="control"></select>
-          </div>
-        </div>
-
-        <div class="chips" id="categoryChips" aria-label="카테고리 선택"></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="hd">
-        <div>
-          <h2>AI 추천 (가짜 로직)</h2>
-          <p>실제 MVP에서는 여기만 “크롤링/소셜 트렌드/LLM 요약”으로 대체하면 됩니다.</p>
-        </div>
-      </div>
-      <div class="bd">
-        <div id="aiPickGrid" class="grid" aria-label="AI 추천 카드"></div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="sectionTitle">
-      <h2>전체 트렌드 피드</h2>
-      <p class="hint">최근 반응 점수(가상) 기반 정렬 · 필터 적용</p>
-    </div>
-    <div id="feedGrid" class="grid" aria-label="트렌드 피드"></div>
-  </section>
-
-  <div class="footer">
-    실제 서비스에서는 <b>국가별 트렌드 수집(뉴스/SNS/커뮤니티)</b> → <b>요약/분류</b> → <b>추천/랭킹</b> 파이프라인으로 교체하세요.
-  </div>
-</main>
-
-<!-- Modal -->
-<div class="modalBack" id="modalBack" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="mh">
-      <h3 id="modalTitle">상세</h3>
-      <button class="btn" id="btnClose">닫기</button>
-    </div>
-    <div class="mb">
-      <div class="kv">
-        <div>
-          <div class="k">한줄 소개</div>
-          <div class="v" id="mIntro">-</div>
+          <h5>Company</h5>
+          <a href="#">About</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
         </div>
         <div>
-          <div class="k">왜 뜨는가 (요약)</div>
-          <div class="v" id="mWhy">-</div>
-        </div>
-        <div>
-          <div class="k">소비/즐기는 방법</div>
-          <ul class="list" id="mHow"></ul>
+          <h5>Policy</h5>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Partners</a>
         </div>
       </div>
+    </footer>
+  </main>
 
-      <div class="linkBox">
-        <div class="k">메타</div>
-        <div class="v" id="mMeta">-</div>
-        <a href="#" target="_blank" rel="noopener" id="mBuy">구매/참고 링크 열기</a>
-        <a href="#" target="_blank" rel="noopener" id="mLearn">더 알아보기(검색)</a>
-        <div style="margin-top:10px; color:var(--muted); font-size:12px; font-weight:700; line-height:1.45;">
-          ※ MVP에서는 링크가 샘플일 수 있습니다. 실제에선 쇼핑/지도/공식 사이트/리뷰로 연결하세요.
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  <script>
+    const FONT_KEY = "trendcatch-font-choice";
+    const fontSelect = document.getElementById("fontSelect");
 
-<script>
-  /**
-   * TrendScope MVP (Single-file)
-   * - 현재는 mock 데이터 + 간단 추천/필터 로직
-   * - 나중에 API로 교체: fetchTrends(), fetchCountries(), fetchRegions(), aiPick()
-   */
-
-  const CATEGORIES = [
-    { key: "all", label: "전체" },
-    { key: "fashion", label: "패션" },
-    { key: "accessory", label: "소품" },
-    { key: "food", label: "음식" },
-    { key: "dessert", label: "디저트" },
-    { key: "culture", label: "문화/놀이" },
-    { key: "music", label: "음악" },
-    { key: "sports", label: "스포츠" },
-  ];
-
-  // 샘플 데이터(가상)
-  // score: 현재 반응/버즈(0~100), updatedAt: 최신성 표시용
-  let trends = [
-    {
-      id: "t1",
-      title: "Korea: 약과 아이스크림(뉴트로 한과 디저트)",
-      category: "dessert",
-      country: "대한민국",
-      region: "서울",
-      intro: "약과를 아이스크림/파르페 토핑으로 올려 ‘뉴트로+달달’ 조합으로 소비.",
-      why: "전통 간식의 재해석 + SNS 인증 컷(텍스처/비주얼) + 카페 확산.",
-      how: ["카페 시그니처 메뉴로 맛보기", "약과/아이스크림 DIY 조합", "선물용 한과 패키지로 확장"],
-      buyUrl: "https://search.naver.com/search.naver?query=%EC%95%BD%EA%B3%BC+%EC%95%84%EC%9D%B4%EC%8A%A4%ED%81%AC%EB%A6%BC",
-      score: 86,
-      updatedAt: daysAgo(2),
-    },
-    {
-      id: "t2",
-      title: "Japan: 말차 폼 라떼 + 디저트 페어링",
-      category: "food",
-      country: "일본",
-      region: "도쿄",
-      intro: "말차(抹茶) 음료에 폼/크림을 더하고 디저트와 세트로 즐기는 트렌드.",
-      why: "웰빙/쓴맛 선호 + 감각적 카페 연출 + 관광 수요.",
-      how: ["말차 라떼/폼 라떼 주문", "말차 티라미수/롤케이크와 페어링", "말차 전문 카페 투어"],
-      buyUrl: "https://www.google.com/search?q=tokyo+matcha+foam+latte",
-      score: 79,
-      updatedAt: daysAgo(5),
-    },
-    {
-      id: "t3",
-      title: "USA: 러닝 코어(Run-core) 패션",
-      category: "fashion",
-      country: "미국",
-      region: "뉴욕",
-      intro: "러닝웨어를 일상복으로 믹스(윈드브레이커, 숏츠, 러닝화, 기능성 소재).",
-      why: "러닝/하프 마라톤 붐 + 애슬레저 지속 + 기능성/실용성.",
-      how: ["러닝화+테크웨어 믹스", "워킹/러닝 커뮤니티 참여", "레이스 이벤트 캘린더 확인"],
-      buyUrl: "https://www.google.com/search?q=run+core+fashion",
-      score: 82,
-      updatedAt: daysAgo(3),
-    },
-    {
-      id: "t4",
-      title: "France: 바게트 샌드(스트리트 스타일)",
-      category: "food",
-      country: "프랑스",
-      region: "파리",
-      intro: "바게트에 다양한 속재료를 넣어 ‘가볍게 들고 먹는’ 스트리트 푸드로 재주목.",
-      why: "간편식 + 로컬 감성 + 관광객 소비 패턴.",
-      how: ["동네 부랑주리 샌드위치 구매", "치즈/햄/채소 클래식 조합", "피크닉 문화와 결합"],
-      buyUrl: "https://www.google.com/search?q=paris+baguette+sandwich+trend",
-      score: 71,
-      updatedAt: daysAgo(7),
-    },
-    {
-      id: "t5",
-      title: "Thailand: 망고 찹쌀 + 아이스 믹스 디저트",
-      category: "dessert",
-      country: "태국",
-      region: "방콕",
-      intro: "망고 찹쌀을 아이스/빙수 형태로 확장해 더 시원하고 사진 잘 나오게 변형.",
-      why: "열대 과일 시즌성 + 스트리트 디저트 확산 + 쇼츠 바이럴.",
-      how: ["야시장/디저트샵 방문", "코코넛 소스/토핑 커스터마이즈", "테이크아웃 후 인증샷"],
-      buyUrl: "https://www.google.com/search?q=bangkok+mango+sticky+rice+ice+dessert",
-      score: 77,
-      updatedAt: daysAgo(4),
-    },
-    {
-      id: "t6",
-      title: "UK: 축구 밈(경기 후 리액션 클립)",
-      category: "sports",
-      country: "영국",
-      region: "런던",
-      intro: "경기 직후 인터뷰/팬 리액션/짧은 클립이 밈으로 재가공되어 확산.",
-      why: "경기 이벤트성 + 숏폼 플랫폼 확산 + 커뮤니티 2차 창작.",
-      how: ["경기 하이라이트+리액션 보기", "팬 커뮤니티 밈 탐색", "자막/편집으로 2차 제작"],
-      buyUrl: "https://www.google.com/search?q=football+reaction+clips+meme",
-      score: 74,
-      updatedAt: daysAgo(6),
-    },
-    {
-      id: "t7",
-      title: "Korea: 포토부스 감성 소품(키링/스티커/프레임)",
-      category: "accessory",
-      country: "대한민국",
-      region: "부산",
-      intro: "포토부스 촬영 경험을 확장하는 키링/스티커/프레임 소품 소비가 증가.",
-      why: "경험 소비 + 굿즈화 + 커플/친구 콘텐츠.",
-      how: ["포토부스 촬영 후 굿즈 추가", "키링/스티커로 다이어리 꾸미기", "기념일/선물로 활용"],
-      buyUrl: "https://search.naver.com/search.naver?query=%ED%8F%AC%ED%86%A0%EB%B6%80%EC%8A%A4+%ED%82%A4%EB%A7%81",
-      score: 69,
-      updatedAt: daysAgo(8),
-    },
-    {
-      id: "t8",
-      title: "Global: 하이퍼팝/댄스 챌린지(신곡 바이럴)",
-      category: "music",
-      country: "글로벌",
-      region: "온라인",
-      intro: "신곡의 하이라이트 구간이 댄스 챌린지로 퍼지며 플랫폼에서 급상승.",
-      why: "알고리즘 추천 + 짧은 후렴 구간 + 크리에이터 참여.",
-      how: ["챌린지 버전 영상 보기", "튜토리얼로 따라하기", "리믹스/커버 콘텐츠 확장"],
-      buyUrl: "https://www.google.com/search?q=hyperpop+dance+challenge+trend",
-      score: 88,
-      updatedAt: daysAgo(1),
-    },
-    {
-      id: "t9",
-      title: "Italy: 에스프레소 토닉(여름 프리드링크)",
-      category: "food",
-      country: "이탈리아",
-      region: "밀라노",
-      intro: "에스프레소+토닉의 쌉싸름/청량 조합이 카페에서 시그니처로 등장.",
-      why: "커피 문화 + 새로운 식감/맛 + 계절성(더위).",
-      how: ["카페 시그니처로 주문", "레몬/허브로 변형", "홈카페 레시피 공유"],
-      buyUrl: "https://www.google.com/search?q=espresso+tonic+italy+trend",
-      score: 73,
-      updatedAt: daysAgo(9),
-    },
-    {
-      id: "t10",
-      title: "USA: 레트로 게임 나이트(보드+콘솔 혼합)",
-      category: "culture",
-      country: "미국",
-      region: "LA",
-      intro: "친구들과 보드게임+레트로 콘솔을 섞어 ‘게임 나이트’ 경험을 만드는 문화.",
-      why: "오프라인 소셜 회귀 + 레트로 감성 + 스트리밍 공유.",
-      how: ["테마별 게임 나이트 기획", "스낵/음료 페어링", "사진/클립으로 공유"],
-      buyUrl: "https://www.google.com/search?q=retro+game+night+trend",
-      score: 67,
-      updatedAt: daysAgo(10),
-    },
-  ];
-
-  const els = {
-    chips: document.getElementById("categoryChips"),
-    search: document.getElementById("search"),
-    country: document.getElementById("country"),
-    region: document.getElementById("region"),
-    aiPickGrid: document.getElementById("aiPickGrid"),
-    feedGrid: document.getElementById("feedGrid"),
-    btnTheme: document.getElementById("btnTheme"),
-    btnRefresh: document.getElementById("btnRefresh"),
-    btnAbout: document.getElementById("btnAbout"),
-    modalBack: document.getElementById("modalBack"),
-    btnClose: document.getElementById("btnClose"),
-    mTitle: document.getElementById("modalTitle"),
-    mIntro: document.getElementById("mIntro"),
-    mWhy: document.getElementById("mWhy"),
-    mHow: document.getElementById("mHow"),
-    mMeta: document.getElementById("mMeta"),
-    mBuy: document.getElementById("mBuy"),
-    mLearn: document.getElementById("mLearn"),
-  };
-
-  const state = {
-    category: "all",
-    search: "",
-    country: "전체",
-    region: "전체",
-  };
-
-  // ---- Init ----
-  initTheme();
-  renderCategoryChips();
-  renderCountryOptions();
-  renderRegionOptions();
-  wireEvents();
-  renderAll();
-
-  // ---- UI / Rendering ----
-  function renderCategoryChips(){
-    els.chips.innerHTML = "";
-    CATEGORIES.forEach(cat=>{
-      const chip = document.createElement("div");
-      chip.className = "chip";
-      chip.textContent = cat.label;
-      chip.dataset.key = cat.key;
-      chip.dataset.active = (state.category === cat.key) ? "true" : "false";
-      chip.addEventListener("click", ()=>{
-        state.category = cat.key;
-        updateActiveChips();
-        renderRegionOptions(); // 국가/지역 옵션 업데이트
-        renderAll();
-      });
-      els.chips.appendChild(chip);
-    });
-  }
-
-  function updateActiveChips(){
-    [...els.chips.children].forEach(ch=>{
-      ch.dataset.active = (ch.dataset.key === state.category) ? "true" : "false";
-    });
-  }
-
-  function renderCountryOptions(){
-    const countries = ["전체", ...unique(trends.map(t=>t.country)).sort((a,b)=>a.localeCompare(b,"ko"))];
-    els.country.innerHTML = countries.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
-    els.country.value = state.country;
-  }
-
-  function renderRegionOptions(){
-    const filteredByCountry = (state.country === "전체")
-      ? trends
-      : trends.filter(t=>t.country === state.country);
-
-    const regions = ["전체", ...unique(filteredByCountry.map(t=>t.region)).sort((a,b)=>a.localeCompare(b,"ko"))];
-    els.region.innerHTML = regions.map(r=>`<option value="${escapeHtml(r)}">${escapeHtml(r)}</option>`).join("");
-    // 현재 선택 region이 옵션에 없으면 전체로
-    if(!regions.includes(state.region)) state.region = "전체";
-    els.region.value = state.region;
-  }
-
-  function renderAll(){
-    const filtered = applyFilters(trends, state);
-
-    // AI 추천(가상): 카테고리별 상위 1개씩 + 전체 상위 1개 (중복 제거)
-    const aiPicks = aiPick(filtered);
-    renderGrid(els.aiPickGrid, aiPicks, { showAi: true });
-
-    // 피드: 점수 내림차순
-    const sorted = [...filtered].sort((a,b)=> b.score - a.score);
-    renderGrid(els.feedGrid, sorted, { showAi: false });
-
-    // 국가/지역 옵션도 최신 반영
-    renderCountryOptions();
-    renderRegionOptions();
-  }
-
-  function renderGrid(container, items, opts){
-    container.innerHTML = "";
-    if(items.length === 0){
-      const empty = document.createElement("div");
-      empty.className = "panel";
-      empty.style.gridColumn = "1 / -1";
-      empty.innerHTML = `
-        <div class="bd" style="padding:16px">
-          <div style="font-weight:1000; font-size:14px; margin-bottom:6px;">결과가 없어요</div>
-          <div style="color:var(--muted); font-weight:700; font-size:13px; line-height:1.5;">
-            필터를 완화하거나 키워드를 변경해 보세요.
-          </div>
-        </div>
-      `;
-      container.appendChild(empty);
-      return;
+    function applyFontMode(mode) {
+      const value = mode === "en" ? "en" : "ko";
+      document.documentElement.setAttribute("data-font", value);
+      fontSelect.value = value;
+      localStorage.setItem(FONT_KEY, value);
     }
 
-    items.forEach(item=>{
-      const card = document.createElement("div");
-      card.className = "card";
-      card.setAttribute("role", "button");
-      card.setAttribute("tabindex", "0");
+    const saved = localStorage.getItem(FONT_KEY);
+    applyFontMode(saved || "ko");
 
-      const isHot = item.score >= 80;
-      const hotPill = isHot ? `<span class="pill hot">🔥 HOT</span>` : ``;
-      const aiPill = opts.showAi ? `<span class="pill ai">🤖 AI 추천</span>` : ``;
-
-      card.innerHTML = `
-        <div class="meta">
-          <span class="pill">${labelOfCategory(item.category)}</span>
-          <span class="pill">${escapeHtml(item.country)} · ${escapeHtml(item.region)}</span>
-          ${hotPill}
-          ${aiPill}
-        </div>
-        <h3>${escapeHtml(item.title)}</h3>
-        <p class="desc">${escapeHtml(item.intro)}</p>
-
-        <div class="row">
-          <div class="score">반응 점수: ${item.score} · 업데이트: ${formatDate(item.updatedAt)}</div>
-          <div class="miniBtns">
-            <button class="mini" data-action="buy" title="링크 열기">링크</button>
-            <button class="mini primary" data-action="detail" title="상세 보기">상세</button>
-          </div>
-        </div>
-      `;
-
-      // 카드 클릭: 상세
-      card.addEventListener("click", (e)=>{
-        const btn = e.target.closest("button");
-        if(btn){
-          const action = btn.dataset.action;
-          if(action === "buy"){
-            window.open(item.buyUrl, "_blank", "noopener");
-            e.stopPropagation();
-            return;
-          }
-          if(action === "detail"){
-            openModal(item);
-            e.stopPropagation();
-            return;
-          }
-        }else{
-          openModal(item);
-        }
-      });
-
-      card.addEventListener("keydown", (e)=>{
-        if(e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          openModal(item);
-        }
-      });
-
-      container.appendChild(card);
+    fontSelect.addEventListener("change", (event) => {
+      applyFontMode(event.target.value);
     });
-  }
-
-  // ---- Events ----
-  function wireEvents(){
-    els.search.addEventListener("input", ()=>{
-      state.search = els.search.value.trim();
-      renderAll();
-    });
-    els.country.addEventListener("change", ()=>{
-      state.country = els.country.value;
-      state.region = "전체"; // 국가 바꾸면 지역 초기화
-      renderRegionOptions();
-      renderAll();
-    });
-    els.region.addEventListener("change", ()=>{
-      state.region = els.region.value;
-      renderAll();
-    });
-
-    els.btnTheme.addEventListener("click", toggleTheme);
-
-    els.btnRefresh.addEventListener("click", ()=>{
-      // 샘플 점수/업데이트를 약간 섞어서 "새로고침 느낌"만 주기
-      trends = trends.map(t=>({
-        ...t,
-        score: clamp( Math.round(t.score + rand(-7, 7)), 40, 95 ),
-        updatedAt: daysAgo( clamp(Math.round(rand(0, 12)), 0, 12) )
-      }));
-      renderAll();
-    });
-
-    els.btnAbout.addEventListener("click", ()=>{
-      alert(
-`TrendScope MVP v0.1
-
-현재 구현된 것:
-- 카테고리/국가/지역/키워드 필터
-- AI 추천(가상 로직) 섹션
-- 카드/상세 모달(소개, 소비방법, 링크)
-
-다음 단계(권장):
-- 수집: 뉴스/SNS/커뮤니티 트렌드 크롤링 또는 API
-- 정제: 중복 제거, 국가/카테고리 분류
-- 요약: LLM로 "왜 뜨는지/어떻게 소비" 자동 생성
-- 랭킹: 조회/좋아요/언급량/신선도 기반 스코어링`
-      );
-    });
-
-    // Modal close
-    els.btnClose.addEventListener("click", closeModal);
-    els.modalBack.addEventListener("click", (e)=>{
-      if(e.target === els.modalBack) closeModal();
-    });
-    window.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape") closeModal();
-    });
-  }
-
-  // ---- Modal ----
-  function openModal(item){
-    els.modalBack.dataset.open = "true";
-    els.modalBack.setAttribute("aria-hidden", "false");
-
-    els.mTitle.textContent = item.title;
-    els.mIntro.textContent = item.intro;
-    els.mWhy.textContent = item.why;
-    els.mHow.innerHTML = item.how.map(x=>`<li>${escapeHtml(x)}</li>`).join("");
-    els.mMeta.textContent =
-      `${labelOfCategory(item.category)} · ${item.country} · ${item.region} · 반응 점수 ${item.score} · 업데이트 ${formatDate(item.updatedAt)}`;
-
-    els.mBuy.href = item.buyUrl || "#";
-    const q = encodeURIComponent(`${item.title} ${item.country} ${item.region}`);
-    els.mLearn.href = `https://www.google.com/search?q=${q}`;
-  }
-
-  function closeModal(){
-    els.modalBack.dataset.open = "false";
-    els.modalBack.setAttribute("aria-hidden", "true");
-  }
-
-  // ---- Filtering / AI Picks ----
-  function applyFilters(items, st){
-    const kw = st.search.toLowerCase();
-    return items.filter(t=>{
-      const okCat = (st.category === "all") ? true : t.category === st.category;
-      const okCountry = (st.country === "전체") ? true : t.country === st.country;
-      const okRegion = (st.region === "전체") ? true : t.region === st.region;
-      const hay = `${t.title} ${t.intro} ${t.why} ${t.country} ${t.region}`.toLowerCase();
-      const okKw = kw ? hay.includes(kw) : true;
-      return okCat && okCountry && okRegion && okKw;
-    });
-  }
-
-  function aiPick(filtered){
-    // 카테고리별 top1 + 전체 top1
-    const picks = [];
-    const byCat = {};
-    filtered.forEach(t=>{
-      if(!byCat[t.category]) byCat[t.category] = [];
-      byCat[t.category].push(t);
-    });
-
-    Object.keys(byCat).forEach(cat=>{
-      byCat[cat].sort((a,b)=> b.score - a.score);
-      picks.push(byCat[cat][0]);
-    });
-
-    // 전체 top
-    const topAll = [...filtered].sort((a,b)=> b.score - a.score)[0];
-    if(topAll) picks.push(topAll);
-
-    // 중복 제거
-    const uniq = [];
-    const seen = new Set();
-    for(const p of picks){
-      if(p && !seen.has(p.id)){
-        seen.add(p.id);
-        uniq.push(p);
-      }
-    }
-    // 너무 많으면 6개로 제한
-    return uniq.slice(0, 6);
-  }
-
-  // ---- Theme ----
-  function initTheme(){
-    const saved = localStorage.getItem("trendScopeTheme");
-    if(saved === "light" || saved === "dark"){
-      document.documentElement.dataset.theme = saved;
-    }else{
-      document.documentElement.dataset.theme = "dark";
-    }
-  }
-  function toggleTheme(){
-    const now = document.documentElement.dataset.theme === "light" ? "dark" : "light";
-    document.documentElement.dataset.theme = now;
-    localStorage.setItem("trendScopeTheme", now);
-  }
-
-  // ---- Utils ----
-  function unique(arr){ return [...new Set(arr.filter(Boolean))]; }
-  function labelOfCategory(key){
-    const hit = CATEGORIES.find(c=>c.key === key);
-    return hit ? hit.label : key;
-  }
-  function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
-  function rand(a,b){ return Math.random() * (b-a) + a; }
-  function daysAgo(n){
-    const d = new Date();
-    d.setDate(d.getDate() - n);
-    return d.toISOString();
-  }
-  function formatDate(iso){
-    try{
-      const d = new Date(iso);
-      const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,"0");
-      const dd = String(d.getDate()).padStart(2,"0");
-      return `${y}-${m}-${dd}`;
-    }catch(_){
-      return "-";
-    }
-  }
-  function escapeHtml(str){
-    return String(str ?? "")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-</script>
+  </script>
 </body>
 </html>
