@@ -1,173 +1,110 @@
-const trends = [
-  {
-    title: '아시아 스트리트 믹스 레이어링',
-    category: '패션',
-    country: '대한민국',
-    region: '서울',
-    summary: '테크웨어와 빈티지 스포츠웨어를 섞은 레이어링이 SNS 숏폼에서 빠르게 확산 중.',
-    intro: '오버사이즈 아우터 + 포인트 액세서리 조합이 핵심이며, 성수/홍대 편집숍 착장 리뷰가 인기입니다.',
-    consumption: ['편집숍 룩북 참고', '리셀 플랫폼에서 한정 아이템 탐색', '스타일 챌린지 해시태그 참여'],
-    purchaseLink: 'https://www.musinsa.com'
-  },
-  {
-    title: 'Y2K 비즈 폰스트랩',
-    category: '소품',
-    country: '일본',
-    region: '도쿄',
-    summary: '직접 커스텀 가능한 비즈 폰스트랩이 다시 유행하며 키치 무드 강화.',
-    intro: '하라주쿠 소품숍 중심으로 컬러 비즈·캐릭터 참 조합이 인기이며, 선물용 수요도 높습니다.',
-    consumption: ['DIY 키트 구매 후 제작', '핸드메이드 마켓에서 주문', '가방·키링 세트로 연출'],
-    purchaseLink: 'https://minne.com'
-  },
-  {
-    title: '프로틴 디저트 컵',
-    category: '디저트',
-    country: '미국',
-    region: '캘리포니아',
-    summary: '저당·고단백 디저트가 건강 루틴과 결합해 카페 신메뉴로 확산.',
-    intro: '그릭요거트와 견과류, 과일 토핑을 층층이 쌓아 "헬시하지만 맛있는" 경험을 강조합니다.',
-    consumption: ['헬시 카페 방문', '밀키트 정기배송', '운동 후 간식 루틴에 포함'],
-    purchaseLink: 'https://www.wholefoodsmarket.com'
-  },
-  {
-    title: '스페셜티 말차 라떼 바',
-    category: '음식',
-    country: '프랑스',
-    region: '파리',
-    summary: '말차 전문 바에서 산지·블렌딩을 고르는 체험형 음료 문화가 급부상.',
-    intro: '시각적 퍼포먼스와 티 페어링을 묶어 관광객·로컬 MZ 모두를 타깃으로 운영합니다.',
-    consumption: ['팝업 티바 예약', '원물 매장 구매', '홈카페 세트 구독'],
-    purchaseLink: 'https://www.palaisdesthes.com'
-  },
-  {
-    title: '초단편 브이로그 챌린지',
-    category: '문화',
-    country: '브라질',
-    region: '상파울루',
-    summary: '15초 내 일상을 압축해 보여주는 브이로그 포맷이 브랜드 협업까지 확장.',
-    intro: '현지 음악과 자막 밈을 함께 쓰는 것이 포인트이며, 영상 제작 워크숍도 인기입니다.',
-    consumption: ['숏폼 앱 챌린지 참여', '크리에이터 클래스 수강', '음원·템플릿 구독'],
-    purchaseLink: 'https://www.tiktok.com'
-  },
-  {
-    title: '로파이 하이브리드 플레이리스트',
-    category: '음악',
-    country: '영국',
-    region: '런던',
-    summary: '로파이 비트와 UK garage를 섞은 플레이리스트가 공부/작업용으로 확산.',
-    intro: '커뮤니티 기반 큐레이션 계정이 트렌드를 주도하고 오프라인 청음 모임도 늘어났습니다.',
-    consumption: ['스트리밍 큐레이션 팔로우', '청음 이벤트 참여', '뮤직 굿즈 구매'],
-    purchaseLink: 'https://open.spotify.com'
-  },
-  {
-    title: '슬랭 기반 언어교환 스터디',
-    category: '언어',
-    country: '멕시코',
-    region: '멕시코시티',
-    summary: '교과서 표현보다 현지 밈/슬랭을 배우는 언어교환 모임이 인기.',
-    intro: '짧은 상황극과 밈 해석 중심으로 진행되어 참여 장벽이 낮고, SNS 콘텐츠로도 활용됩니다.',
-    consumption: ['로컬 밋업 참가', '짧은 표현 카드 구독', '온라인 언어교환 앱 사용'],
-    purchaseLink: 'https://www.meetup.com'
-  }
+const categories = [
+  { name: 'Fashion', sub: 'Y2K & Gorpcore', icon: '👕' },
+  { name: 'Lifestyle', sub: 'Modern Living', icon: '🪞' },
+  { name: 'Food', sub: 'Global Flavors', icon: '🍜' },
+  { name: 'Culture', sub: 'Art & Events', icon: '🎨' },
+  { name: 'Music', sub: 'Trending Beats', icon: '🎧' }
 ];
 
-const categorySelect = document.getElementById('category-select');
-const countrySelect = document.getElementById('country-select');
-const regionSelect = document.getElementById('region-select');
-const resetBtn = document.getElementById('reset-btn');
-const trendList = document.getElementById('trend-list');
-const resultCount = document.getElementById('result-count');
-const cardTemplate = document.getElementById('trend-card-template');
+const regionData = {
+  Seoul: [
+    { tag: 'HOT PICK', title: 'Gorpcore Minimalism', desc: 'Technical outdoor wear meets sleek urban aesthetics in Hongdae.', image: 'https://images.unsplash.com/photo-1594493247993-530f6f46e8b7?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'VIRAL FOOD', title: 'Custard Mochi Buns', desc: 'The latest convenience store snack taking over SNS feeds.', image: 'https://images.unsplash.com/photo-1616671276441-2f2c277b8bf1?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'CULTURE', title: 'Immersive Digital Art', desc: 'Meta-verse exhibitions are redefining the Seoul gallery scene.', image: 'https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=300&q=60' }
+  ],
+  Tokyo: [
+    { tag: 'FASHION', title: 'Retro Phone Charms', desc: 'Colorful beaded straps dominate Harajuku accessory walls.', image: 'https://images.unsplash.com/photo-1512499617640-c2f999098c01?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'FOOD', title: 'Matcha Dessert Labs', desc: 'Hyper-creative matcha parfait bars expand into Shibuya.', image: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'CULTURE', title: 'Night Vinyl Sessions', desc: 'Small listening rooms blend lo-fi DJ sets with tea pairings.', image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=300&q=60' }
+  ],
+  Paris: [
+    { tag: 'LIFESTYLE', title: 'Soft Neutral Interiors', desc: 'Cream palettes and curved lighting define new apartment trends.', image: 'https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'FOOD', title: 'Butter Board Brunch', desc: 'Social brunch spots reinvent charcuterie-style spreads.', image: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'CULTURE', title: 'Micro Cinema Clubs', desc: 'Curated 40-minute screening communities are rapidly growing.', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=300&q=60' }
+  ],
+  London: [
+    { tag: 'MUSIC', title: 'Lo-fi Synth Waves', desc: 'Neo-underground genre blending UK garage and lo-fi textures.', image: 'https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'FASHION', title: 'Trench + Sport Mix', desc: 'Classic trench coats layered with football scarves.', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'FOOD', title: 'Pistachio Everything', desc: 'Pistachio cream drinks and pastries top menu charts.', image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=300&q=60' }
+  ],
+  NYC: [
+    { tag: 'FASHION', title: 'Matte Silver Accessories', desc: 'Brushed metallic textures replace shiny chrome this season.', image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'LIFESTYLE', title: 'Grandpa Chic Knits', desc: 'Cozy oversized knitwear rules SoHo and Brooklyn streets.', image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=300&q=60' },
+    { tag: 'CULTURE', title: 'Pocket Gallery Popups', desc: 'Tiny one-room exhibitions are attracting Gen-Z creators.', image: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&fit=crop&w=300&q=60' }
+  ]
+};
 
-const unique = (values) => [...new Set(values)];
+const feedItems = [
+  { title: 'Matte Silver Accessories', desc: 'Brushed metal textures are replacing high-shine finishes this season.', action: 'How to Style', image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=500&q=60' },
+  { title: 'Pistachio Everything', desc: 'From lattes to croissants, pistachio is the flavor profile of the month.', action: 'Shop Now', image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=500&q=60' },
+  { title: 'Grandpa Chic Knits', desc: 'Cozy oversized and thrifted aesthetics are sweeping urban streets.', action: 'Discover', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=500&q=60' },
+  { title: 'Lo-fi Synth Waves', desc: 'A new underground genre blending lo-fi indie with retro synth textures.', action: 'Listen Now', image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=500&q=60' }
+];
 
-function createOption(value, label = value) {
-  const option = document.createElement('option');
-  option.value = value;
-  option.textContent = label;
-  return option;
+const categoryGrid = document.getElementById('category-grid');
+const regionChips = document.getElementById('region-chips');
+const regionList = document.getElementById('region-list');
+const feedGrid = document.getElementById('feed-grid');
+const mapCity = document.getElementById('map-city');
+const mapCaption = document.getElementById('map-caption');
+
+let activeRegion = 'Seoul';
+
+function renderCategories() {
+  categoryGrid.innerHTML = categories.map((item) => `
+    <article class="category-item">
+      <div class="category-icon">${item.icon}</div>
+      <h3>${item.name}</h3>
+      <p>${item.sub}</p>
+    </article>
+  `).join('');
 }
 
-function setOptions(select, items, allLabel) {
-  select.innerHTML = '';
-  select.append(createOption('ALL', allLabel));
-  items.forEach((item) => select.append(createOption(item)));
-}
+function renderRegionChips() {
+  regionChips.innerHTML = Object.keys(regionData).map((region) => `
+    <button type="button" class="${region === activeRegion ? 'active' : ''}" data-region="${region}">${region}</button>
+  `).join('');
 
-function initializeFilters() {
-  setOptions(categorySelect, unique(trends.map((item) => item.category)), '모든 카테고리');
-  setOptions(countrySelect, unique(trends.map((item) => item.country)), '모든 국가');
-  updateRegionOptions();
-}
-
-function updateRegionOptions() {
-  const currentCountry = countrySelect.value;
-  const regionCandidates = trends
-    .filter((item) => currentCountry === 'ALL' || item.country === currentCountry)
-    .map((item) => item.region);
-
-  setOptions(regionSelect, unique(regionCandidates), '모든 지역');
-}
-
-function applyFilter(item) {
-  const categoryOk = categorySelect.value === 'ALL' || item.category === categorySelect.value;
-  const countryOk = countrySelect.value === 'ALL' || item.country === countrySelect.value;
-  const regionOk = regionSelect.value === 'ALL' || item.region === regionSelect.value;
-  return categoryOk && countryOk && regionOk;
-}
-
-function createTrendCard(item) {
-  const fragment = cardTemplate.content.cloneNode(true);
-  fragment.querySelector('.category').textContent = item.category;
-  fragment.querySelector('.place').textContent = `${item.country} · ${item.region}`;
-  fragment.querySelector('.title').textContent = item.title;
-  fragment.querySelector('.summary').textContent = item.summary;
-  fragment.querySelector('.intro').textContent = item.intro;
-
-  const list = fragment.querySelector('.consumption-list');
-  item.consumption.forEach((entry) => {
-    const li = document.createElement('li');
-    li.textContent = entry;
-    list.append(li);
-  });
-
-  const link = fragment.querySelector('.purchase-link');
-  link.href = item.purchaseLink;
-
-  return fragment;
-}
-
-function render() {
-  const filtered = trends.filter(applyFilter);
-  trendList.innerHTML = '';
-
-  if (filtered.length === 0) {
-    const empty = document.createElement('p');
-    empty.className = 'empty';
-    empty.textContent = '조건에 맞는 트렌드가 없습니다. 필터를 조정해 보세요.';
-    trendList.append(empty);
-  } else {
-    filtered.forEach((item) => {
-      trendList.append(createTrendCard(item));
+  regionChips.querySelectorAll('button').forEach((button) => {
+    button.addEventListener('click', () => {
+      activeRegion = button.dataset.region;
+      renderRegionChips();
+      renderRegionCards();
     });
-  }
-
-  resultCount.textContent = `${filtered.length}개 추천 중`;
+  });
 }
 
-categorySelect.addEventListener('change', render);
-countrySelect.addEventListener('change', () => {
-  updateRegionOptions();
-  render();
-});
-regionSelect.addEventListener('change', render);
-resetBtn.addEventListener('click', () => {
-  categorySelect.value = 'ALL';
-  countrySelect.value = 'ALL';
-  updateRegionOptions();
-  regionSelect.value = 'ALL';
-  render();
-});
+function renderRegionCards() {
+  const list = regionData[activeRegion] ?? [];
+  mapCity.textContent = `${activeRegion}${activeRegion === 'Seoul' ? ', KR' : ''}`;
+  mapCaption.textContent = `${list.length * 4} New Trend Discoveries Today`;
 
-initializeFilters();
-render();
+  regionList.innerHTML = list.map((item) => `
+    <article class="region-card">
+      <div class="region-thumb" style="background-image:url('${item.image}')"></div>
+      <div>
+        <p>${item.tag}</p>
+        <h4>${item.title}</h4>
+        <p>${item.desc}</p>
+      </div>
+    </article>
+  `).join('');
+}
+
+function renderFeed() {
+  feedGrid.innerHTML = feedItems.map((item) => `
+    <article class="feed-card">
+      <div class="feed-image" style="background-image:url('${item.image}')"></div>
+      <div class="feed-content">
+        <h4>${item.title}</h4>
+        <p>${item.desc}</p>
+        <button type="button">${item.action}</button>
+      </div>
+    </article>
+  `).join('');
+}
+
+renderCategories();
+renderRegionChips();
+renderRegionCards();
+renderFeed();

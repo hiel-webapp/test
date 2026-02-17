@@ -3,65 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>글로벌 트렌드 파인더 MVP</title>
+  <title>TrendCatch | 글로벌 트렌드 파인더</title>
   <link href="/style.css" rel="stylesheet" />
 </head>
 <body>
-  <header class="hero">
-    <p class="eyebrow">MZ를 위한 실시간 감성 큐레이션</p>
-    <h1>글로벌 트렌드 파인더</h1>
-    <p class="hero-description">
-      AI 추천으로 패션·음식·문화·언어까지, 나라별 요즘 유행을 빠르게 탐색하세요.
-    </p>
-  </header>
-
-  <main class="layout">
-    <section class="panel filters">
-      <h2>탐색 옵션</h2>
-      <label for="category-select">카테고리</label>
-      <select id="category-select"></select>
-
-      <label for="country-select">국가</label>
-      <select id="country-select"></select>
-
-      <label for="region-select">지역</label>
-      <select id="region-select"></select>
-
-      <button id="reset-btn" type="button">필터 초기화</button>
-      <p class="hint">선택을 바꿀 때마다 아래 추천 카드가 자동 갱신됩니다.</p>
-    </section>
-
-    <section class="panel results">
-      <div class="results-header">
-        <h2>AI 추천 핫 트렌드</h2>
-        <span id="result-count"></span>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot">↗</span>
+        <strong>TrendCatch</strong>
       </div>
-      <div id="trend-list" class="trend-grid" aria-live="polite"></div>
-    </section>
-  </main>
-
-  <template id="trend-card-template">
-    <article class="trend-card">
-      <div class="meta-row">
-        <span class="badge category"></span>
-        <span class="badge place"></span>
+      <nav class="top-nav">
+        <a href="#">Fashion</a>
+        <a href="#">Lifestyle</a>
+        <a href="#">Food</a>
+        <a href="#">Culture</a>
+        <a href="#">Music</a>
+      </nav>
+      <div class="top-actions">
+        <input type="search" placeholder="Search trends . ." aria-label="트렌드 검색" />
+        <button class="lang-btn" type="button">EN</button>
+        <button class="join-btn" type="button">Join</button>
       </div>
-      <h3 class="title"></h3>
-      <p class="summary"></p>
+    </header>
 
-      <div class="subsection">
-        <h4>간략 소개</h4>
-        <p class="intro"></p>
+    <main>
+      <section class="hero-card">
+        <div class="hero-content">
+          <span class="badge">AI CURATED TODAY</span>
+          <h1>The World's Next Obsession,<br /><em>Curated by AI.</em></h1>
+          <p>Real-time data from Seoul to NYC. Discover what's<br />blowing up before it hits your feed.</p>
+          <div class="hero-buttons">
+            <button type="button" class="cta primary">Explore Now</button>
+            <button type="button" class="cta">View Trends Map</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-heading">
+        <h2>Explore by Category</h2>
+        <p>Dive deep into specific industry shifts.</p>
+      </section>
+      <section class="category-grid" id="category-grid"></section>
+
+      <section class="region-header section-heading">
+        <div>
+          <h2>Trends by Region</h2>
+          <p>What's hot in global capitals right now.</p>
+        </div>
+        <div class="chips" id="region-chips"></div>
+      </section>
+
+      <section class="region-layout">
+        <div class="map-panel">
+          <div class="map-overlay">
+            <strong id="map-city">Seoul, KR</strong>
+            <span id="map-caption">12 New Trend Discoveries Today</span>
+          </div>
+        </div>
+        <div class="region-list" id="region-list"></div>
+      </section>
+
+      <section class="section-heading trend-feed-title">
+        <h2>Trend Feed</h2>
+      </section>
+      <section class="feed-grid" id="feed-grid"></section>
+      <div class="load-more-wrap">
+        <button type="button" class="load-more">Load More Trends</button>
       </div>
+    </main>
 
-      <div class="subsection">
-        <h4>소비/구매 방법</h4>
-        <ul class="consumption-list"></ul>
+    <footer class="footer">
+      <div>
+        <div class="brand"><span class="brand-dot">↗</span><strong>TrendCatch</strong></div>
+        <p class="footer-title">Subscribe to Trend Alerts</p>
+        <p class="footer-sub">Get the weekly "TrendPulse" delivered straight to your inbox.</p>
+        <div class="subscribe">
+          <input type="email" placeholder="Your email address" />
+          <button type="button">Subscribe</button>
+        </div>
       </div>
-
-      <a class="purchase-link" target="_blank" rel="noreferrer noopener">구매처/관련 링크 보기</a>
-    </article>
-  </template>
+      <div class="footer-links">
+        <div>
+          <h4>EXPLORE</h4>
+          <a href="#">Regional Map</a>
+          <a href="#">Trend Reports</a>
+          <a href="#">AI Insights</a>
+        </div>
+        <div>
+          <h4>ABOUT</h4>
+          <a href="#">Our Story</a>
+          <a href="#">Careers</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </footer>
+  </div>
 
   <script defer src="/main.js"></script>
 </body>
